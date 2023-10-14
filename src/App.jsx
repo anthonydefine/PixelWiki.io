@@ -39,7 +39,7 @@ function App() {
       const res = await fetch(`https://rawg.io/api/${chosenSelection}key=${api}`);
       const jsonResponse = await res.json();
       setShowGames(jsonResponse.results);
-      console.log(jsonResponse.results)
+      console.log(jsonResponse)
       setIsLoading(false);
     };
     fetchData();

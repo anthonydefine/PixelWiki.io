@@ -1,6 +1,5 @@
 import React from "react";
 import { Button, Badge } from 'flowbite-react';
-import { FaPlus } from "react-icons/fa";
 import { GoDotFill } from "react-icons/go";
 
 function Ratings(props) {
@@ -80,10 +79,9 @@ function Ratings(props) {
         </li>
       </ul>
       <div className="flex flex-col gap-2 md:flex-row items-center justify-between w-full">
-        <button className="flex items-center gap-3 p-3 w-full md:w-auto rounded-xl border-2 hover:border-black">
-          <FaPlus />
+        <Button pill gradientMonochrome="pink" className="p-3 w-full md:w-auto">
           Add to Library
-        </button>
+        </Button>
         {props.metacritic ?
           <Badge className="p-2 w-full md:w-auto">
             Metacritic {props.metacritic}
