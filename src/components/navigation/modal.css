@@ -1,0 +1,32 @@
+.modalBackground {
+  position:fixed;
+  top: 0;
+  left:0;
+  width:100vw;
+  height:100vh;
+  background-color:rgba(0,0,0,0.5);
+  z-index: 5000;
+}
+
+.modalContainer {
+  border-radius: 12px;
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+  position: fixed;
+  top: 15%;
+  left: 0; 
+  right: 0; 
+  margin-left: auto; 
+  margin-right: auto; 
+  display: flex;
+  flex-direction: column;
+  padding: 25px;
+  z-index: 9999!important;
+}
+
+.modalContainer::backdrop {
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+}
+
+#displayname {
+  background-color: rgb(30 41 59);
+}

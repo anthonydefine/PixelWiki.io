@@ -1,0 +1,70 @@
+body {
+  background-color: rgb(30 41 59);
+}
+#root {
+  max-width: 1440px;
+  margin: 0 auto;
+}
+
+#navBar {
+  position: fixed;
+  max-width: 1440px;
+  width: 100%;
+  margin: 0 auto;
+  top: 0;
+  color: white;
+  z-index: 40;
+}
+
+#searchBar {
+  background-color: rgb(71 85 105);
+  color: rgb(237, 238, 239);
+  border-radius: 24px;
+  border: none;
+  outline: 0!important;
+  border-color: rgb(51 65 85);
+}
+#searchBar::placeholder {
+  color: rgb(237, 238, 239);
+}
+
+#searchSuggestions {
+  margin-top: 10rem;
+  height: 16rem;
+  background-color: rgb(237, 238, 239);
+  position: absolute;
+  top: 50%; /* Place the top edge of the div at the middle of the relative container */
+  left: 50%; /* Place the left edge of the div at the middle of the relative container */
+  transform: translate(-50%, -50%);
+}
+
+#searchSuggestions::-webkit-scrollbar {
+  display: none;
+}
+
+#ratingsGrid li {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-weight: 600;
+  text-transform: capitalize;
+  border: 1px solid transparent;
+  letter-spacing: 0.025rem;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  padding: 0.22rem;
+  cursor: pointer;
+}
+
+#storeList li {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  padding: .25rem;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+#storeList li:hover {
+  text-decoration: underline;
+}
