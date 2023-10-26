@@ -71,7 +71,6 @@ function Navigation(props) {
                 {searchResult?.slice(0, 15).map((item) => {
                   return (
                     <>
-                      
                       <li onClick={handleClose} className="text-slate-500 hover:text-slate-200 p-4 hover:bg-slate-600" key={item.slug}>
                         <SearchItem {...item} />
                       </li>

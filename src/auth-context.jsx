@@ -1,7 +1,7 @@
 import React, { useState, useEffect, createContext } from "react";
 import { auth, db } from "./firebase";
-import { signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut } from "firebase/auth";
-import { collection, doc, getDoc, setDoc, updateDoc, addDoc, getDocs, query, serverTimestamp } from "firebase/firestore";
+import { signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut, getAuth } from "firebase/auth";
+import { collection, doc, getDoc, setDoc, updateDoc, addDoc, getDocs, query, serverTimestamp, deleteDoc } from "firebase/firestore";
 
 const AuthContext = createContext();
 
@@ -36,6 +36,19 @@ const AuthContextProvider = (props) => {
 
   //Add game to library
   const addToLibrary = async (props) => {
+    const auth = getAuth();
+    const user = auth.currentUser;
+    if (!user) {
+      // User is not authenticated, handle this case (for example, redirect to login page)
+      setUserToast(true);
+      setShowToast(true);
+      setToastMessage('Must be signed in to add to library!');
+      setTimeout(() => {
+        setShowToast(false);
+      }, 5000);
+      return;
+    }
+    const currentUid = user.uid;
     const userRef = doc(db, 'users', currentUid);
     const gameLibraryRef = collection(userRef, 'gameLibrary');
     const gameData = {
@@ -58,6 +71,24 @@ const AuthContextProvider = (props) => {
       console.error('Error adding game: ', error);
     }
   };
+
+  //Remove from library
+  const removeFromLibrary = async (gameId) => {
+    const userRef = doc(db, 'users', currentUid);
+    const docRef = doc(userRef, 'gameLibrary', gameId);
+    try {
+      await deleteDoc(docRef);
+      setUserToast(false);
+      setShowToast(true);
+      setToastMessage('Removed game from library!');
+      setTimeout(() => {
+        setShowToast(false);
+      }, 5000);
+    } catch (error) {
+      console.log('error deleting game')
+    }
+
+  }
 
   //fetch game library
   const fetchGameLibrary = async () => {
@@ -161,15 +192,13 @@ const AuthContextProvider = (props) => {
     {id: 1, name: "Best of 2021", value: "games?dates=2021-01-01,2021-12-31&ordering=-added&"},
     {id: 2, name: "Best of 2022", value: "games?dates=2022-01-01,2022-12-31&ordering=-added&"},
     {id: 3, name: "Best of 2023", value: "games?dates=2023-01-01,2023-12-31&ordering=-added&"},
-    {id: 4, name: "Must Play", value: "collections/must-play/games&"},
-    {id: 5, name: "Popular", value: "collections/lists/popular?"},
     {id: 6, name: "Upcoming", value: "games?dates=2023-10-10,2024-12-31&ordering=-added&"},
   ]
   const [chosenSelection, setChosenSelection] = useState("games?dates=2023-10-10,2024-12-31&ordering=-added&");
   const [chosenTitle, setChosenTitle] = useState("Upcoming")
 
   const contextValue = { currentUser, setCurrentUser, currentUid, setCurrentUid, email, setEmail, 
-    password, setPassword, displayName, setDisplayName, createUser, loginUser, signout, fetchGameLibrary,
+    password, setPassword, displayName, setDisplayName, createUser, loginUser, signout, fetchGameLibrary, removeFromLibrary,
     getUserDoc, addToLibrary, showAviModal, setShowAviModal, aviUrl, setAviUrl, changeAvatar, showDiplaynameModal,
     setShowDisplaynameModal, changeDisplayname, showToast, setShowToast, toastMessage, setToastMessage, userToast,
     chosenSelection, setChosenSelection, gameDashSelection, setChosenTitle, chosenTitle, isLoading, setIsLoading };
