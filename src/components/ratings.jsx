@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useContext } from "react";
+import { AuthContext } from "../auth-context";
 import { Button, Badge } from 'flowbite-react';
 import { GoDotFill } from "react-icons/go";
 
@@ -37,6 +38,8 @@ function Ratings(props) {
   let recommendedPercent = Math.ceil(recommended?.percent / 10) * 10;
   let mehPercent = Math.ceil(meh?.percent / 10) * 10;
   let skipPercent = Math.ceil(skip?.percent / 10) * 10;
+
+  const { addToLibrary } = useContext(AuthContext);
 
   return (
     <>
@@ -79,7 +82,12 @@ function Ratings(props) {
         </li>
       </ul>
       <div className="flex flex-col gap-2 md:flex-row items-center justify-between w-full">
-        <Button pill gradientMonochrome="pink" className="p-3 w-full md:w-auto">
+        <Button 
+          pill 
+          gradientMonochrome="pink" 
+          className="p-3 w-full md:w-auto"
+          onClick={() => addToLibrary(props)}
+        >
           Add to Library
         </Button>
         {props.metacritic ?

@@ -125,7 +125,9 @@ function Navigation(props) {
               </span>
             </Dropdown.Item>
             <Dropdown.Item className="text-slate-200 hover:bg-transparent focus:bg-transparent focus:underline">
-              My Library
+              <Link to='/gamelibrary'>
+                My Library
+              </Link>
             </Dropdown.Item>
             <Dropdown.Divider className="bg-slate-800" />
             <Dropdown.Item className="text-slate-200 hover:bg-transparent focus:bg-transparent focus:underline" onClick={signout}>

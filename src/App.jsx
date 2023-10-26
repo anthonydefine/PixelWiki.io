@@ -8,6 +8,7 @@ import PageFooter from './components/page-footer';
 import './App.css';
 import FullGame from './pages/full-game';
 import Dashboard from './pages/home/dashboard';
+import GameLibrary from './pages/game-library';
 
 
 function App() {
@@ -39,7 +40,6 @@ function App() {
       const res = await fetch(`https://rawg.io/api/${chosenSelection}key=${api}`);
       const jsonResponse = await res.json();
       setShowGames(jsonResponse.results);
-      console.log(jsonResponse)
       setIsLoading(false);
     };
     fetchData();
@@ -47,12 +47,15 @@ function App() {
 
   return (
     <>
-      <Navigation setSearchGame={setSearchGame} />
-      <Routes>
-        <Route index exact path='/' element={<Dashboard handleState={showGames} />}/>
-        <Route exact path=':gameName' element={<FullGame searchGame={searchGame} handleState={showGames} />}/>
-      </Routes>
-      <PageFooter />
+      <div className='h-screen'>
+        <Navigation setSearchGame={setSearchGame} />
+        <Routes>
+          <Route index exact path='/' element={<Dashboard handleState={showGames} />}/>
+          <Route exact path=':gameName' element={<FullGame searchGame={searchGame} handleState={showGames} />}/>
+          <Route path='gamelibrary' element={<GameLibrary />}/>
+        </Routes>
+        <PageFooter />
+      </div>
     </>
   )
 }

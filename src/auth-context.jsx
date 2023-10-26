@@ -1,7 +1,7 @@
 import React, { useState, useEffect, createContext } from "react";
 import { auth, db } from "./firebase";
 import { signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut } from "firebase/auth";
-import { collection, doc, getDoc, setDoc, updateDoc } from "firebase/firestore";
+import { collection, doc, getDoc, setDoc, updateDoc, addDoc, getDocs, query, serverTimestamp } from "firebase/firestore";
 
 const AuthContext = createContext();
 
@@ -35,15 +35,47 @@ const AuthContextProvider = (props) => {
   };
 
   //Add game to library
-  const AddToLibrary = async (props) => {
-    const collectionRef = collection(db, 'users', currentUid, 'library');
-    const data = {
-      name: props.name,
-      image: props.background_image,
+  const addToLibrary = async (props) => {
+    const userRef = doc(db, 'users', currentUid);
+    const gameLibraryRef = collection(userRef, 'gameLibrary');
+    const gameData = {
+      gameName: props.name,
+      photo: props.background_image,
       rating: props.rating,
-      genres: props.genres
+      released: props.released,
+      genres: props.genres,
+      timestamp: serverTimestamp(),
+    };
+    try {
+      await addDoc(gameLibraryRef, gameData);
+      setUserToast(false);
+      setShowToast(true);
+      setToastMessage('Successfully added game to library!');
+      setTimeout(() => {
+        setShowToast(false);
+      }, 5000);
+    } catch (error) {
+      console.error('Error adding game: ', error);
     }
-    await setDoc(doc(collectionRef, data));
+  };
+
+  //fetch game library
+  const fetchGameLibrary = async () => {
+    const gameLibraryRef = collection(db, 'users', currentUid, 'gameLibrary');
+    const q = query(gameLibraryRef);
+  
+    try {
+      const querySnapshot = await getDocs(q);
+      const games = [];
+      querySnapshot.forEach((doc) => {
+        // doc.data() is never undefined for query doc snapshots
+        games.push({ id: doc.id, ...doc.data() });
+      });
+      return games;
+    } catch (error) {
+      console.error('Error fetching game library:', error);
+      return [];
+    }
   };
 
     //User signup signin signout
@@ -137,8 +169,8 @@ const AuthContextProvider = (props) => {
   const [chosenTitle, setChosenTitle] = useState("Upcoming")
 
   const contextValue = { currentUser, setCurrentUser, currentUid, setCurrentUid, email, setEmail, 
-    password, setPassword, displayName, setDisplayName, createUser, loginUser, signout, 
-    getUserDoc, AddToLibrary, showAviModal, setShowAviModal, aviUrl, setAviUrl, changeAvatar, showDiplaynameModal,
+    password, setPassword, displayName, setDisplayName, createUser, loginUser, signout, fetchGameLibrary,
+    getUserDoc, addToLibrary, showAviModal, setShowAviModal, aviUrl, setAviUrl, changeAvatar, showDiplaynameModal,
     setShowDisplaynameModal, changeDisplayname, showToast, setShowToast, toastMessage, setToastMessage, userToast,
     chosenSelection, setChosenSelection, gameDashSelection, setChosenTitle, chosenTitle, isLoading, setIsLoading };
 

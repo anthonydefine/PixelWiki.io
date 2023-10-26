@@ -9,7 +9,9 @@ import { Rating, Button } from 'flowbite-react';
 function SingleGame(props) {
 
   let genreArr = props.genres;
-  const { AddToLibrary } = useContext(AuthContext);
+  let gameName = props.name;
+  let gameRef = gameName?.toLowerCase();
+  const { addToLibrary } = useContext(AuthContext);
 
   
   return (
@@ -21,7 +23,7 @@ function SingleGame(props) {
             {props.name}
           </p>
         </Link>
-        <Button disabled color="dark" pill size='xs' className='flex items-center' onClick={() => AddToLibrary(props)}>
+        <Button color="dark" pill size='xs' className='flex items-center' onClick={() => addToLibrary(props)}>
           <p>Add to Library</p>
         </Button>
         <div className="flex justify-between items-center font-normal">

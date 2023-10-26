@@ -5,6 +5,7 @@ import { AuthContext } from "../../auth-context";
 import Platforms from "../../components/platforms";
 import AvatarModal from "../../components/navigation/avatar-modal";
 import DisplaynameModal from "../../components/navigation/displayname-modal";
+import UserLibraryTable from "./user-library-table";
 import DynamicToast from "../../components/toast";
 import { Button, Badge } from "flowbite-react";
 import { HiLightningBolt } from 'react-icons/hi';
@@ -86,9 +87,18 @@ function Dashboard(props) {
                 )
               })}
             </ul>
-            <Button pill gradientMonochrome="pink" className='absolute md:w-1/4 -bottom-4' type="button" onClick={() => setMoreGames(!moreGames)}>
+            <Button pill gradientMonochrome="pink" className='absolute w-2/3 md:w-1/4 -bottom-4' type="button" onClick={() => setMoreGames(!moreGames)}>
               {moreGames ? 'Show Less' : 'Discover More Upcoming'}
             </Button>
+          </div>
+          <div className="bg-slate-800 flex flex-col items-center relative p-8 rounded-xl w-full">
+            <h1 className="mb-4 text-3xl font-bold self-start">Your Gaming <strong className="text-pink-500 underline tracking-wider">Library</strong></h1>
+            <UserLibraryTable />
+            <Link to='/gamelibrary'>
+              <Button pill gradientMonochrome="pink" className='absolute w-2/3 md:w-1/4 left-1/2 -translate-x-1/2 -bottom-4' type="button" onClick={() => setMoreGames(!moreGames)}>
+                View Your Library
+              </Button>
+            </Link>
           </div>
           <div className="fixed bottom-10 right-10 z-50">
             <DynamicToast />
